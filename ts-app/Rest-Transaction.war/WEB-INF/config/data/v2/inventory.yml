@@ -1,0 +1,31 @@
+type: inventory
+path: inventories
+entityType: com.ibm.commerce.fulfillment.objects.Inventory
+description: Non-ATP inventory.
+collectionDescription: A collection of non-ATP inventory records.
+getDescription: Get a collection of inventory records.
+getIdDescription: Get an inventory record.
+postDescription: Create an inventory record.
+patchIdDescription: Update an inventory record.
+deleteIdDescription: Delete an inventory record.
+ids: [catalogEntryId, fulfillmentCenterId, storeId]
+properties:
+  catalogEntryId:
+    entityPropertyName: catalogEntryId
+    description: The catalog entry identifier.
+    propertyType: java.lang.String
+  quantity:
+    entityPropertyName: quantity
+    description: The quantity amount, in units indicated by the quantity measure.
+  quantityMeasure:
+    entityPropertyName: quantityMeasure
+    description: The unit of measurement for quantity.
+  inventoryFlags:
+    entityPropertyName: inventoryFlags
+    description: Bit flags, from low to high order, indicating how QUANTITY is used - \n1 = noUpdate. The default UpdateInventory task command does not update quantity. \n2 = noCheck. The default CheckInventory and UpdateInventory task commands do not check quantity.
+  storeId:
+    entityPropertyName: storeId
+    description: The store identifier.
+  fulfillmentCenterId:
+    entityPropertyName: fulfillmentCenter
+    description: The fulfillment center identifier.

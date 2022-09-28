@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	=================================================================
+	Copyright [2021] [HCL America, Inc.]
+	=================================================================
+-->
+<Definitions>
+	<!---
+		This definition defines all items that appear in the Management Center menu button. Each menu item
+		is an instance of {@link cmc/shell/ApplicationMenuItem} and is defined as its child. By
+		default, the menu includes the following items:
+		<ul>
+		<li>Catalogs</li>
+		<li>Marketing</li>
+		<li>Promotions</li>
+		<li>Assets</li>
+		<li>Catalog Filter and Pricing</li>
+		<li>Installments</li>
+		<li>Page Composer</li>
+		<li>Store Management</li>
+		<li>Workspace Management (this menu item displays only if Workspaces are enabled)</li>
+		<li>Getting Started</li>
+		<li>Preferences</li>
+		</ul>
+
+		<p>Menu items appear in the order in which they are defined.  You can customize the menu by
+		reordering the declaration of cmc/shell/ApplicationMenuItem instances inside this definition.
+	-->
+	<BaseApplicationMenuItems definitionName="cmc/shell/ApplicationMenuItems" package="cmc/shell">
+		<dependency localName="installResources" moduleName="cmc/installment/InstallmentResources"/>
+		<dependency localName="shellResources" moduleName="cmc/shell/ShellResources"/>
+		
+		<!---
+			Application menu item for opening the Google Analytics tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.googleAnalyticsDashboardDisplayName}" id="googleAnalyticsDashboard" package="cmc/shell" toolDefinition="cmc/google-analytics/GoogleAnalyticsDashboard" usage="HCL_GoogleAnalyticsTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="googleAnalyticsDashboard"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+
+		<!---
+			Application menu item for opening the Marketplace tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.marketplaceDisplayName}" id="marketplace" package="cmc/shell" toolDefinition="cmc/marketplace/MarketplaceTool" usage="HCL_MarketplaceTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="marketplace"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="environmentType" enablementValue="auth"/>
+					<EnablementCondition contextName="environmentType" enablementValue="toolkit"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+
+		<!---
+			Application menu item for opening the Marketplace Seller Dashboard tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.marketplaceSellerDashboardDisplayName}" id="marketplaceSellerDashboard" package="cmc/shell" toolDefinition="cmc/marketplace/MarketplaceSellerTool" usage="HCL_MarketplaceSellerTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="marketplaceSellerDashboard"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="environmentType" enablementValue="auth"/>
+					<EnablementCondition contextName="environmentType" enablementValue="toolkit"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+
+		<!---
+			Application menu item for opening the Search tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.searchToolDisplayName}" id="searchTool" package="cmc/shell" toolDefinition="cmc/searchTool/SearchTool" usage="HCL_SearchTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="searchTool"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="environmentType" enablementValue="auth"/>
+					<EnablementCondition contextName="environmentType" enablementValue="toolkit"/>
+				</EnablementOrCondition>
+				<EnablementCondition contextName="elasticSearchEnabled" enablementValue="true"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		
+		<!---
+			Application menu item for opening the external content manager.
+		-->
+		<ApplicationMenuItem actionName="openExternalContentManager" displayName="${shellResources.externalContentManager}" id="externalContentManager" package="cmc/shell" usage="IBM_ViewCatalogTool,IBM_ViewMarketingTool,IBM_ViewPromotionTool,IBM_ViewAttachmentTool,IBM_ViewPageComposerTool,IBM_StoreManagementTool">
+			<EnablementAndCondition>
+				<EnablementCondition contextName="externalContentManagerEnabled" enablementValue="true"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>				
+		
+		<!---
+			Application menu item for opening the Catalog Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.catalogManagementDisplayName}" id="catalogManagement" package="cmc/shell" toolDefinition="cmc/catalog/CatalogManagement" usage="IBM_ViewCatalogTool"/>
+		<!---
+			Application menu item for opening the New Catalog Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.catalogManagementDisplayName}" id="newCatalogManagment" package="cmc/shell" toolDefinition="cmc/catalog/NewCatalogManagement" usage="IBM_ViewCatalogTool">
+			<DarkFeatureEnablementCondition featureName="newCatalogManagement"/>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Marketing Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.marketingManagementDisplayName}" id="marketingManagement" package="cmc/shell" toolDefinition="cmc/marketing/MarketingManagement" usage="IBM_ViewMarketingTool"/>
+		<!---
+			Application menu item for opening the Promotion Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.promotionManagementDisplayName}" id="promotionManagement" package="cmc/shell" toolDefinition="cmc/promotion/PromotionManagement" usage="IBM_ViewPromotionTool"/>
+		<!---
+			Application menu item for opening the Attachment Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.attachmentManagementDisplayName}" id="attachmentManagement" package="cmc/shell" toolDefinition="cmc/attachment/AttachmentManagement" usage="IBM_ViewAttachmentTool"/>
+		<!---
+			Application menu item for the Manage Accounts submenu.
+		-->
+		<ApplicationMenuItem displayName="${shellResources.manageAccountsSubmenu}" package="cmc/shell" submenuDefinition="cmc/shell/ManageAccountsMenuItems"/>
+		<!---
+			Application menu item for opening the Installment Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${installResources.installments}" id="installmentManagement" package="cmc/shell" toolDefinition="cmc/installment/InstallmentManagement" usage="IBM_ViewMarketingTool"/>
+		<!---
+			Application menu item for opening the Page Layout Management tool.
+			@deprecated Use Page Composer tool
+		
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.pageLayoutManagementDisplayName}" id="pageLayoutManagement" package="cmc/shell" toolDefinition="cmc/layout/PageLayoutManagement" usage="IBM_ViewPageLayoutTool"/>
+		-->
+		<!---
+			Application menu item for the Manage Stores submenu.
+		-->
+		<ApplicationMenuItem displayName="${shellResources.manageStoresSubmenu}" package="cmc/shell" submenuDefinition="cmc/shell/ManageStoresMenuItems"/>
+		<!---
+			Application menu item for opening the Store Preview tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.storePreviewDisplayName}" id="storePreview" package="cmc/shell" toolDefinition="cmc/preview/StorePreview" usage="IBM_CustomerFacingStore">
+			<DarkFeatureEnablementCondition featureName="storePreview"/>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for the Shipping submenu.
+		-->
+		<ApplicationMenuItem displayName="${shellResources.shippingSubmenu}" package="cmc/shell" submenuDefinition="cmc/shell/ShippingMenuItems"/>
+		<!---
+			Application menu item for the Tax submenu.
+		-->
+		<ApplicationMenuItem displayName="${shellResources.taxSubmenu}" package="cmc/shell" submenuDefinition="cmc/shell/TaxMenuItems"/>
+		<!---
+			Application menu item for the Manage Organizations submenu.
+		-->
+		<ApplicationMenuItem displayName="${shellResources.manageOrganizationsSubmenu}" package="cmc/shell" submenuDefinition="cmc/shell/ManageOrganizationsMenuItems"/>
+		<!---
+			Application menu item for opening the Workspace Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.workspaceManagementDisplayName}" id="workspaceManagement" package="cmc/shell" toolDefinition="cmc/workspace/WorkspaceManagement" usage="IBM_WorkspaceManagementTool"/>
+		<!---
+			Application menu item for the System Administration submenu.
+		-->
+		<ApplicationMenuItem displayName="${shellResources.systemAdministrationSubmenu}" package="cmc/shell" submenuDefinition="cmc/shell/SystemAdministrationMenuItems"/>
+		<!---
+			Application menu item for opening the IFrame test tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="IFrame Test Tool" id="iframeTestTool" availableToWorkspaceTasks="false" package="cmc/shell" toolDefinition="cmc/test/IFrameTestTool">
+			<DarkFeatureEnablementCondition featureName="testTool"/>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the test tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="Test Tool" id="testTool" availableToWorkspaceTasks="false" package="cmc/shell" toolDefinition="cmc/test/TestTool">
+			<DarkFeatureEnablementCondition featureName="testTool"/>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Getting Started page.
+		-->
+		<ApplicationMenuItem actionName="openGettingStarted" displayName="${shellResources.applicationMenuGettingStarted}" id="gettingStarted" objectClass="cmc/shell/GettingStartedPage" package="cmc/shell"/>
+		<!---
+			Application menu item for opening the logging and tracing dialog.
+		-->
+		<ApplicationMenuItem actionName="openLogTrace" displayName="${shellResources.applicationMenuLogTrace}" id="logTrace" package="cmc/shell"/>
+		<!---
+			Application menu item for opening Aha Portal.
+		-->
+		<ApplicationMenuItem actionName="openAhaPortal" displayName="${shellResources.ahaPortal}" id="ahaPortal" package="cmc/shell"/>
+		<!---
+			Application menu item for opening the user preference dialog.
+		-->
+		<ApplicationMenuItem actionName="openPreference" addSeparatorBefore="true" displayName="${shellResources.applicationMenuPreference}" id="globalPreference" package="cmc/shell"/>
+	</BaseApplicationMenuItems>
+
+	<!---
+		Submenu items for Manage Accounts.
+	-->
+	<BaseApplicationMenuItems definitionName="cmc/shell/ManageAccountsMenuItems" package="cmc/shell">
+		<dependency localName="shellResources" moduleName="cmc/shell/ShellResources"/>
+
+		<!---
+			Application menu item for opening the Account Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.accountManagementDisplayName}" id="accountManagement" package="cmc/shell" toolDefinition="cmc/account/AccountManagement" usage="HCL_AccountTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="accountManagement"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Pricing Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" availableToWorkspaceTasks="false" displayName="${shellResources.pricingAndEntitlementManagementDisplayName}" id="pricingManagement" package="cmc/shell" toolDefinition="cmc/price/PricingManagement" usage="IBM_PricingTool"/>
+	</BaseApplicationMenuItems>
+
+	<!---
+		Submenu items for Manage Stores.
+	-->
+	<BaseApplicationMenuItems definitionName="cmc/shell/ManageStoresMenuItems" package="cmc/shell">
+		<dependency localName="shellResources" moduleName="cmc/shell/ShellResources"/>
+		<dependency localName="storeResources" moduleName="cmc/store/StoreResources"/>
+
+		<!---
+			Application menu item for opening the Store Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" availableToWorkspaceTasks="false" displayName="${storeResources.storeManagementDisplayName}" id="storeManagement" package="cmc/shell" toolDefinition="cmc/store/StoreManagement" usage="IBM_StoreManagementTool"/>
+		<!---
+			Application menu item for opening the E-Site Store Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.eSiteStoreManagementDisplayName}" id="eSiteStoreManagement" package="cmc/shell" toolDefinition="cmc/esite/ESiteStoreManagement" usage="HCL_ESiteTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="eSiteStoreManagement"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Page Composer tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.pageBuilderDisplayName}" id="pageBuilder" package="cmc/shell" toolDefinition="cmc/page-builder/PageBuilder" usage="HCL_PageBuilderTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="pageBuilder"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="environmentType" enablementValue="auth"/>
+					<EnablementCondition contextName="environmentType" enablementValue="toolkit"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Commerce Composer tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.pageComposerDisplayName}" id="pageComposer" package="cmc/shell" toolDefinition="cmc/pagelayout/PageComposer" usage="IBM_ViewPageComposerTool"/>
+			<!---
+			Application menu item for opening the Store Theme tool.
+		-->
+		
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="Store Theme" id="StoreThemeManagement" package="cmc/shell" toolDefinition="cmc/theme/StoreThemeManagement"></ApplicationMenuItem>	
+	</BaseApplicationMenuItems>
+
+	<!---
+		Submenu items for Shipping.
+	-->
+	<BaseApplicationMenuItems definitionName="cmc/shell/ShippingMenuItems" package="cmc/shell">
+		<dependency localName="shellResources" moduleName="cmc/shell/ShellResources"/>
+
+		<!---
+			Application menu item for opening the Shipping Jurisdiction Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.shippingJurisdictionManagementDisplayName}" id="shippingJurisdictionManagement" package="cmc/shell" toolDefinition="cmc/shipping-jurisdictions/ShippingJurisdictionManagement" usage="HCL_ShippingTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="shippingJurisdictionManagement"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Shipping Code Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.shippingCodeManagementDisplayName}" id="shippingCodeManagement" package="cmc/shell" toolDefinition="cmc/shipping-codes/ShippingCodeManagement" usage="HCL_ShippingTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="shippingCodeManagement"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Shipping Mode Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.shippingModeManagementDisplayName}" id="shippingModeManagement" package="cmc/shell" toolDefinition="cmc/shipping-modes/ShippingModeManagement" usage="HCL_ShippingTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="shippingModeManagement"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+	</BaseApplicationMenuItems>
+
+	<!---
+		Submenu items for Tax.
+	-->
+	<BaseApplicationMenuItems definitionName="cmc/shell/TaxMenuItems" package="cmc/shell">
+		<dependency localName="shellResources" moduleName="cmc/shell/ShellResources"/>
+
+		<!---
+			Application menu item for opening the Tax Jurisdiction Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.taxJurisdictionManagementDisplayName}" id="taxJurisdictionManagement" package="cmc/shell" toolDefinition="cmc/tax-jurisdictions/TaxJurisdictionManagement" usage="HCL_TaxTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="taxJurisdictionManagement"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Tax Code Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.taxCodeManagementDisplayName}" id="taxCodeManagement" package="cmc/shell" toolDefinition="cmc/tax-codes/TaxCodeManagement" usage="HCL_TaxTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="taxCodeManagement"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Tax Category Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.taxCategoryManagementDisplayName}" id="taxCategoryManagement" package="cmc/shell" toolDefinition="cmc/tax-categories/TaxCategoryManagement" usage="HCL_TaxTool">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="taxCategoryManagement"/>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+	</BaseApplicationMenuItems>
+
+	<!---
+		Submenu items for Manage Organizations.
+	-->
+	<BaseApplicationMenuItems definitionName="cmc/shell/ManageOrganizationsMenuItems" package="cmc/shell">
+		<dependency localName="shellResources" moduleName="cmc/shell/ShellResources"/>
+
+		<!---
+			Application menu item for opening the Member Group Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.memberGroupManagementDisplayName}" id="memberGroupManagement" package="cmc/shell" toolDefinition="cmc/membergroup/MemberGroupManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="memberGroupManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="sellerAdministrator" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Organization Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.organizationManagementDisplayName}" id="organizationManagement" package="cmc/shell" toolDefinition="cmc/organization/OrganizationManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="organizationManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="sellerAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="buyerAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="channelManager" enablementValue="true"/>
+					<EnablementCondition contextName="customerServiceRepresentative" enablementValue="true"/>
+					<EnablementCondition contextName="customerServiceSupervisor" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the User Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.userManagementDisplayName}" id="userManagement" package="cmc/shell" toolDefinition="cmc/user/UserManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="userManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="sellerAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="buyerAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="channelManager" enablementValue="true"/>
+					<EnablementCondition contextName="customerServiceRepresentative" enablementValue="true"/>
+					<EnablementCondition contextName="customerServiceSupervisor" enablementValue="true"/>
+					<EnablementCondition contextName="seller" enablementValue="true"/>
+					<EnablementCondition contextName="operationsManager" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Approval Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.approvalManagementDisplayName}" id="approvalManagement" package="cmc/shell" toolDefinition="cmc/approval/ApprovalManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="approvalManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="sellerAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="buyerAdministrator" enablementValue="true"/>
+					<EnablementCondition contextName="buyerApprover" enablementValue="true"/>
+					<EnablementCondition contextName="channelManager" enablementValue="true"/>
+					<EnablementCondition contextName="accountRepresentative" enablementValue="true"/>
+					<EnablementCondition contextName="sellSideBuyer" enablementValue="true"/>
+					<EnablementCondition contextName="customerServiceSupervisor" enablementValue="true"/>
+					<EnablementCondition contextName="salesManager" enablementValue="true"/>
+					<EnablementCondition contextName="seller" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+	</BaseApplicationMenuItems>
+
+	<!---
+		Submenu items for System Administration.
+	-->
+	<BaseApplicationMenuItems definitionName="cmc/shell/SystemAdministrationMenuItems" package="cmc/shell">
+		<dependency localName="shellResources" moduleName="cmc/shell/ShellResources"/>
+
+		<!---
+			Application menu item for opening the Transport Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.transportManagementDisplayName}" id="transportManagement" package="cmc/shell" toolDefinition="cmc/transports/TransportManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="transportManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Message Type Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.messageTypeManagementDisplayName}" id="messageTypeManagement" package="cmc/shell" toolDefinition="cmc/messageTypes/MessageTypeManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="messageTypeManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Message Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.messageManagementDisplayName}" id="messageManagement" package="cmc/shell" toolDefinition="cmc/messages/MessageManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="messageManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Scheduler tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.schedulerDisplayName}" id="scheduler" package="cmc/shell" toolDefinition="cmc/scheduler/Scheduler">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="scheduler"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Registry Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.registryManagementDisplayName}" id="registryManagement" package="cmc/shell" toolDefinition="cmc/registry/RegistryManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="registryManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+		<!---
+			Application menu item for opening the Security Policies Management tool.
+		-->
+		<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="${shellResources.securityPolicyManagementDisplayName}" id="securityPolicyManagement" package="cmc/shell" toolDefinition="cmc/securityPolicies/SecurityPolicyManagement">
+			<EnablementAndCondition>
+				<DarkFeatureEnablementCondition featureName="securityPolicyManagement"/>
+				<EnablementOrCondition>
+					<EnablementCondition contextName="siteAdministrator" enablementValue="true"/>
+				</EnablementOrCondition>
+			</EnablementAndCondition>
+		</ApplicationMenuItem>
+<!--- Application menu item for opening the Inventory Management Tool -->
+<ApplicationMenuItem actionName="openBusinessObjectEditor" displayName="Inventory Management" id="InventoryManagement" package="cmc/shell" toolDefinition="cmc/inventory/InventoryManagement" />
+	</BaseApplicationMenuItems>
+</Definitions>

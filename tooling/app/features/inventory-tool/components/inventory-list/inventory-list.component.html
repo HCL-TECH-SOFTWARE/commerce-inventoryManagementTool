@@ -1,0 +1,163 @@
+<!--
+	=================================================================
+	Copyright [2021] [HCL America, Inc.]
+	=================================================================
+-->
+
+<div>
+	<h1 class="hc-type-h1">
+		Inventory
+	</h1>
+	<div class="hc-table-section hc-paper">
+		<!-- Search,Filter part(start) -->
+		<!-- <div class="hc-table-actions">
+			<form [formGroup]="listSearchFrom1" autocomplete="off">
+				
+				<mat-form-field appearance="outline" class="store-filter icon-suffix">
+					<mat-label>{{'MESSAGES.STORE_FILTER'| translate}}</mat-label>
+					<input matInput id="store" (input)="searchStores($event.target.value)" placeholder="{{'MESSAGES.SELECT_STORE_PLACEHOLDER'| translate}}"
+							formControlName="store" [matAutocomplete]="storeAutocomplete" (blur)="resetSelectedStore()">
+					<mat-autocomplete #storeAutocomplete="matAutocomplete" (optionSelected)="selectStore($event.option.value)">
+						<mat-option *ngFor="let store of storeList" [value]="store">
+							{{store.identifier}}
+						</mat-option>
+					</mat-autocomplete>
+					<mat-icon matSuffix>filter_list</mat-icon>
+				</mat-form-field>
+				<mat-form-field appearance="outline" class="store-filter icon-suffix">
+					<mat-label>Primary Color</mat-label>
+					<input matInput [ngxMatColorPicker]="picker" formControlName="mainColorCtr">
+					<ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+					<ngx-mat-color-picker #picker></ngx-mat-color-picker>
+				</mat-form-field>
+				<mat-form-field appearance="outline" class="store-filter icon-suffix">
+					<mat-label>Secondary Color</mat-label>
+					<input matInput [ngxMatColorPicker]="darkpicker" formControlName="darkColorCtr">
+					<ngx-mat-color-toggle matSuffix [for]="darkpicker"></ngx-mat-color-toggle>
+					<ngx-mat-color-picker #darkpicker></ngx-mat-color-picker>
+				</mat-form-field>
+				<div class="hc-table-buttons">
+					<button class="mat-flat-button mat-primary" (click)="saveTheme()">{{saveBtn}}</button>
+					<button matTooltip="{{'MESSAGES.REFRESH' | translate}}" mat-icon-button (click)="refresh()">
+						<mat-icon color="primary">refresh</mat-icon>
+					</button>
+				</div>
+			</form>
+			
+			
+		</div> -->
+		<div class="hc-table-actions">
+			<form [formGroup]="catalogentryIdSearchForm" autocomplete="off">
+				<mat-form-field appearance="outline" class="icon-suffix">
+					<mat-label>Search Catalog Entry Id</mat-label>
+					<input matInput (input)="searchProductsByCatalogEntryId($event.target.value)"
+						placeholder="Search by Catalog Entry Id" formControlName="searchCatalogEntryIdText">
+					<mat-icon matSuffix>search</mat-icon>
+					<span class="filter-clear" *ngIf="currentSearchString != null" (click)="clearSearch()">
+						<mat-icon>clear</mat-icon>
+						<span class="clear-margin">clear</span>
+					</span>
+				</mat-form-field>
+			</form>
+			<div class="hc-table-buttons">
+				<mat-slide-toggle color="primary" [checked]="showFilters" (change)="toggleShowFilters($event)">Filter
+				</mat-slide-toggle>
+				<button class="mat-flat-button mat-primary" (click)="createInventory()">New</button>
+				<button class="mat-icon-button-label" matTooltip="{{'SHIPPING_CODES.REFRESH' | translate}}"
+					mat-icon-button (click)="refresh()">
+					<mat-icon color="primary">refresh</mat-icon>
+				</button>
+			</div>
+		</div>
+		<div *ngIf="showFilters">
+			<div class="hc-table-filters">
+				<form [formGroup]="listSearchFrom1" autocomplete="off">
+				
+					<mat-form-field appearance="outline" class="store-filter icon-suffix">
+						<mat-label>{{'MESSAGES.STORE_FILTER'| translate}}</mat-label>
+						<input matInput id="store" (input)="searchStores($event.target.value)" placeholder="{{'MESSAGES.SELECT_STORE_PLACEHOLDER'| translate}}"
+								formControlName="store" [matAutocomplete]="storeAutocomplete" (blur)="resetSelectedStore()">
+						<mat-autocomplete #storeAutocomplete="matAutocomplete" (optionSelected)="selectStore($event.option.value)">
+							<mat-option *ngFor="let store of storeList" [value]="store">
+								{{store.identifier}}-{{store.id}}
+							</mat-option>
+						</mat-autocomplete>
+						<mat-icon matSuffix>filter_list</mat-icon>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline" class="store-filter icon-suffix">
+						<mat-label>Fullfilment Center Filter</mat-label>
+						<input matInput id="fulfilmentCenterId" (input)="searchFullfilmentCenter($event.target.value)" placeholder="Fulfillment Center Id"
+								formControlName="fulfilmentCenterId" [matAutocomplete]="FCenterAutocomplete" (blur)="resetSelectedFCenter()">
+						<mat-autocomplete #FCenterAutocomplete="matAutocomplete" (optionSelected)="selectFCenter($event.option.value)">
+							<mat-option *ngFor="let fcenter of FCenterList" [value]="fcenter">
+								{{fcenter.name}}-{{fcenter.id}}
+							</mat-option>
+						</mat-autocomplete>
+						<mat-icon matSuffix>filter_list</mat-icon>
+					</mat-form-field>
+					</form>
+
+			</div>
+		</div>
+
+		<div class="hc-table-wrapper">
+			<table mat-table [dataSource]="dataSource" matSort matSortActive="{{activeColumn}}"
+				matSortDirection="{{sortDirection}}">
+
+				<!-- Namespace Column -->
+				<ng-container matColumnDef="catalogEntryId">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> Catalog Entry Id </th>
+					<td mat-cell *matCellDef="let element">{{element.catalogEntryId}}
+					</td>
+				</ng-container>
+
+				<!-- Display Column -->
+				<ng-container matColumnDef="storeId">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> Store Id </th>
+					<td mat-cell *matCellDef="let element"> {{element.storeId}} </td>
+				</ng-container>
+
+				<!-- Match Rule Column -->
+				<ng-container matColumnDef="fulfilmentCenterId">
+					<th mat-header-cell *matHeaderCellDef> FulfilmentCenter Id </th>
+					<td mat-cell *matCellDef="let element"> {{element.fulfilmentCenterId}} </td>
+				</ng-container>
+
+				<!-- merge rule Column -->
+				<ng-container matColumnDef="quantity">
+					<th mat-header-cell *matHeaderCellDef> Quantity </th>
+					<td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+				</ng-container>
+
+
+				<!--Action -->
+				<ng-container matColumnDef="actions" stickyEnd>
+					<th mat-header-cell *matHeaderCellDef>Action</th>
+					<td mat-cell *matCellDef="let element">
+						<button matTooltip="Edit" mat-icon-button aria-label="edit"
+							(click)="editInventory(element)">
+							<mat-icon color="primary">edit</mat-icon></button>
+						<button matTooltip="Delete" mat-icon-button aria-label="delete"
+							(click)="deleteInventory(element)">
+							<mat-icon color="primary">delete</mat-icon>
+						</button>
+					</td>
+				</ng-container>
+
+				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+			</table>
+			<!-- TABLE PART (END) -->
+		</div>
+		<div *ngIf="!dataSource.data || dataSource.data.length === 0" class="no-records">
+			{{'GENERAL.NO_RECORDS_FOUND' | translate}}
+		</div>
+		<mat-paginator [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+			[pageSizeOptions]="pageSizeOptions" (page)="handlePage($event)">
+		</mat-paginator>
+	</div>
+
+
+
+</div>

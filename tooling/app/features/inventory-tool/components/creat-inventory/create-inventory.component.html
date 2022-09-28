@@ -1,0 +1,70 @@
+<!--
+	=================================================================
+	Copyright [2021] [HCL America, Inc.]
+	=================================================================
+-->
+
+<div>
+	<h1 class="hc-type-h1">
+		{{pageTitle}}
+	</h1>
+	<div class="hc-stepper-section hc-paper">
+		<div class="hc-stepper-actions">
+			<h2 class="hc-type-h2">
+				{{pageTitle}}
+			</h2>
+			<div>
+				<button class="mat-flat-button" type="button" (click)="cancel()">Cancel</button>
+				<button class="mat-flat-button" type="button" (click)="clear()" *ngIf="!editFlag">Clear</button>
+				<button class="mat-flat-button mat-primary" type="button" (click)="submit()">Submit</button>
+			</div>
+		</div>
+		<mat-vertical-stepper [linear]="true" #stepper>
+			<ng-template matStepperIcon="edit">
+				<mat-icon>check</mat-icon>
+			</ng-template>
+			<mat-step #detailsStep label="Inventory Details">
+				<mat-form-field appearance="outline">
+					<mat-label>Catalog Entry Id</mat-label>
+					<input matInput id="SKUId" [(ngModel)]="skuid" autocomplete="off"  (keypress)="keyPressNumeric($event)" [disabled]="editFlag">
+				</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Quantity</mat-label>
+					<input matInput id="quantity" [(ngModel)]="quantity" autocomplete="off"  (keypress)="keyPressNumeric($event)">
+				</mat-form-field>
+				
+
+				<form [formGroup]="listSearchFrom1" autocomplete="off" style="margin-top: 16px;">
+				
+					<mat-form-field appearance="outline" class="store-filter icon-suffix">
+						<mat-label>{{'MESSAGES.STORE_FILTER'| translate}}</mat-label>
+						<input matInput id="store" (input)="searchStores($event.target.value)" placeholder="{{'MESSAGES.SELECT_STORE_PLACEHOLDER'| translate}}"
+								formControlName="store" [matAutocomplete]="storeAutocomplete" (blur)="resetSelectedStore()" >
+						<mat-autocomplete #storeAutocomplete="matAutocomplete" (optionSelected)="selectStore($event.option.value)">
+							<mat-option *ngFor="let store of storeList" [value]="store">
+								{{store.identifier}}-{{store.id}}
+							</mat-option>
+						</mat-autocomplete>
+						<mat-icon matSuffix>filter_list</mat-icon>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline" class="store-filter icon-suffix">
+						<mat-label>Fullfilment Center Filter</mat-label>
+						<input matInput id="fulfilmentCenterId" (input)="searchFullfilmentCenter($event.target.value)" placeholder="Fulfillment Center Id"
+								formControlName="fulfilmentCenterId" [matAutocomplete]="FCenterAutocomplete" (blur)="resetSelectedFCenter()">
+						<mat-autocomplete #FCenterAutocomplete="matAutocomplete" (optionSelected)="selectFCenter($event.option.value)">
+							<mat-option *ngFor="let fcenter of FCenterList" [value]="fcenter">
+								{{fcenter.name}}-{{fcenter.id}}
+							</mat-option>
+						</mat-autocomplete>
+						<mat-icon matSuffix>filter_list</mat-icon>
+					</mat-form-field>
+					</form>
+
+
+				<button class="mat-flat-button mat-primary" type="button" (click)="submit()">Submit</button>
+			</mat-step>
+			
+		</mat-vertical-stepper>
+	</div>
+</div>
